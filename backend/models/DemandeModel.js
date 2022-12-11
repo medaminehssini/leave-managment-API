@@ -10,6 +10,14 @@ const demandeSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    date_debut: {
+      type: Date,
+      required: false,
+    },
+    date_fin: {
+      type: Date,
+      required: false,
+    },
     nbr_jour: {
       type: Number,
       required: true,

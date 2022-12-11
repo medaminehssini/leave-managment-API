@@ -45,7 +45,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 //@routes POST api/users
 //@access Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, gender, isAdmin, workingWeek } = req.body;
   const userExists = await User.findOne({ email });
 
   if (userExists) {
@@ -56,7 +56,9 @@ const registerUser = asyncHandler(async (req, res) => {
       name,
       email,
       password,
-      workingWeek: 30,
+      gender,
+      workingWeek,
+      isAdmin,
     });
     if (user) {
       res.status(201).json({
@@ -64,6 +66,7 @@ const registerUser = asyncHandler(async (req, res) => {
         name: user.name,
         email: user.email,
         isAdmin: user.isAdmin,
+        gender: user.gender,
         token: generateToken(user._id),
       });
     } else {
@@ -77,12 +80,13 @@ const registerUser = asyncHandler(async (req, res) => {
 //@routes PUT api/users/profile
 //@access private
 const updateUserProfile = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, gender } = req.body;
   const user = await User.findById(req.user._id);
 
   if (user) {
     user.name = name || user.name;
     user.email = email || user.email;
+    user.gender = gender || user.gender || "Male";
 
     if (password) {
       user.password = password;
@@ -148,14 +152,18 @@ const updateUser = asyncHandler(async (req, res) => {
   if (user) {
     user.name = req.body.name || user.name;
     user.email = req.body.email || user.email;
-    user.isAdmin = req.body.isAdmin;
+    user.gender = req.body.gender || user.gender;
+    user.isAdmin = req.body.isAdmin || user.isAdmin;
+    user.workingWeek = req.body.workingWeek || user.workingWeek;
 
     const updatedUser = await user.save();
     res.json({
       _id: updatedUser._id,
       name: updatedUser.name,
       email: updatedUser.email,
+      gender: updatedUser.gender,
       isAdmin: updatedUser.isAdmin,
+      workingWeek: updatedUser.workingWeek,
     });
   } else {
     res.status(404);

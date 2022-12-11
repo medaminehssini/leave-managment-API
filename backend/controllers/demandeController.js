@@ -3,6 +3,8 @@ import Demande from "../models/DemandeModel.js";
 
 import asyncHandler from "express-async-handler";
 import generateToken from "../utils/generateToken.js";
+import { Vonage } from "@vonage/server-sdk";
+
 import { types } from "../utils/constance.js";
 
 //@desc  get user demande
@@ -18,7 +20,7 @@ const getUserDemande = asyncHandler(async (req, res) => {
 //@routes POST api/users
 //@access Public
 const addUserDemande = asyncHandler(async (req, res) => {
-  const { type, nbr_jour } = req.body;
+  const { type, nbr_jour, date_debut, date_fin } = req.body;
 
   const verif = await verifDemande(
     req.user._id,
@@ -33,6 +35,8 @@ const addUserDemande = asyncHandler(async (req, res) => {
       type,
       nbr_jour,
       status: "en progress",
+      date_debut,
+      date_fin,
     });
 
     const createdDemande = await demande.save();
@@ -98,7 +102,7 @@ const updateUserDemande = asyncHandler(async (req, res) => {
 //@routes PUT api/users
 //@access private /admin
 const getDemandes = asyncHandler(async (req, res) => {
-  const demandes = await Demande.find({});
+  const demandes = await Demande.find({}).populate("user");
   res.json(demandes);
 });
 
@@ -111,6 +115,18 @@ const accepteDemande = asyncHandler(async (req, res) => {
   if (demande) {
     demande.status = "accepted";
     await demande.save();
+
+    const vonage = new Vonage({
+      apiKey: "a8f08afc",
+      apiSecret: "DYJHMXWNZjxzmVr8",
+    });
+
+    const from = "Leavemangement";
+    const to = "21629472994";
+    const text = "Votre congé a été accepté";
+
+    const resp = await vonage.sms.send({ from, to, text });
+    console.log(resp);
     res.json({ message: "Demande a été acceptée!" });
   } else {
     res.status(404);

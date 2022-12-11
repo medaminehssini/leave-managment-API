@@ -1,6 +1,6 @@
 export const types = {
-  Payé: 30,
-  maternité: 60,
-  paternité: 3,
+  Paid: 30,
+  Maternity: 60,
+  Paternity: 3,
   RTT: 15,
 };
