@@ -185,10 +185,11 @@ export default function FullFeaturedCrudGrid() {
     {
       field: "actions",
       type: "actions",
+      sortable: true,
       headerName: "Actions",
       width: 100,
       cellClassName: "actions",
-      valueGetter: (params) => params.row.status,
+      valueGetter: (params) => params.row.status.length,
       getActions: (row) => {
         if (row.row.status === "en progress") {
           return [

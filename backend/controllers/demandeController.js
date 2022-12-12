@@ -2,10 +2,9 @@ import User from "../models/UserModel.js";
 import Demande from "../models/DemandeModel.js";
 
 import asyncHandler from "express-async-handler";
-import generateToken from "../utils/generateToken.js";
-import { Vonage } from "@vonage/server-sdk";
 
 import { types } from "../utils/constance.js";
+import { sendEmail, sendSMS } from "../utils/emailConfig.js";
 
 //@desc  get user demande
 //@routes GET api/users/demande
@@ -110,23 +109,20 @@ const getDemandes = asyncHandler(async (req, res) => {
 //@routes PUT api/users/:id
 //@access private/admin
 const accepteDemande = asyncHandler(async (req, res) => {
-  const demande = await Demande.findById(req.params.id);
+  const demande = await Demande.findById(req.params.id).populate("user");
 
   if (demande) {
     demande.status = "accepted";
     await demande.save();
 
-    const vonage = new Vonage({
-      apiKey: "a8f08afc",
-      apiSecret: "DYJHMXWNZjxzmVr8",
-    });
+    await sendSMS("Votre congé a été accepté");
 
-    const from = "Leavemangement";
-    const to = "21629472994";
-    const text = "Votre congé a été accepté";
+    sendEmail(
+      demande.user.email,
+      "Votre congé a été accepté",
+      "Votre congé a été accepté"
+    );
 
-    const resp = await vonage.sms.send({ from, to, text });
-    console.log(resp);
     res.json({ message: "Demande a été acceptée!" });
   } else {
     res.status(404);
@@ -138,11 +134,19 @@ const accepteDemande = asyncHandler(async (req, res) => {
 //@routes PUT api/users/:id
 //@access private/admin
 const refuseDemande = asyncHandler(async (req, res) => {
-  const demande = await Demande.findById(req.params.id);
+  const demande = await Demande.findById(req.params.id).populate("user");
 
   if (demande) {
     demande.status = "refused";
     await demande.save();
+    await sendSMS("Votre congé a été refusé");
+
+    sendEmail(
+      demande.user.email,
+      "Votre congé a été refusé",
+      "Votre congé a été refusé"
+    );
+
     res.json({ message: "Demande a été refusée!" });
   } else {
     res.status(404);

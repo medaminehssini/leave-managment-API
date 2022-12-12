@@ -20,6 +20,7 @@
     "express-async-handler": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.7.3",
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "sib-api-v3-sdk": "^8.4.2"
   }
 }

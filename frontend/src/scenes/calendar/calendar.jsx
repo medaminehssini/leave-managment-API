@@ -113,13 +113,13 @@ const Calendar = () => {
 
   const handleClose = () => setOpen(false);
   const handleEventClick = (selected) => {
-    if (
-      window.confirm(
-        `Are you sure you want to delete the event '${selected.event.title}'`
-      )
-    ) {
-      selected.event.remove();
-    }
+    // if (
+    //   window.confirm(
+    //     `Are you sure you want to delete the event '${selected.event.title}'`
+    //   )
+    // ) {
+    //   selected.event.remove();
+    // }
   };
 
   const handleDateClick = (selecte) => {
@@ -146,18 +146,18 @@ const Calendar = () => {
     if (successADD) {
       setOpen(false);
 
-      const t = conges.filter((e) => (e.label === conge ? e.color : ""));
-      const calendarApi = selected.view.calendar;
-      calendarApi.unselect();
-      calendarApi.addEvent({
-        id: `${selected.dateStr}-${conge}`,
-        title: conge,
-        conge,
-        start: selected.startStr,
-        end: selected.endStr,
-        allDay: selected.allDay,
-        color: t[0].color,
-      });
+      // const t = conges.filter((e) => (e.label === conge ? e.color : ""));
+      // const calendarApi = selected.view.calendar;
+      // calendarApi.unselect();
+      // calendarApi.addEvent({
+      //   id: `${selected.dateStr}-${conge}`,
+      //   title: conge,
+      //   conge,
+      //   start: selected.startStr,
+      //   end: selected.endStr,
+      //   allDay: selected.allDay,
+      //   color: t[0].color,
+      // });
     }
   }, [successADD]);
 
@@ -179,7 +179,7 @@ const Calendar = () => {
         >
           <Typography variant="h5">Events</Typography>
           <List>
-            {currentEvents.map((event) => (
+            {listDemandes.map((event) => (
               <ListItem
                 key={event.id}
                 sx={{
@@ -255,7 +255,7 @@ const Calendar = () => {
             select={handleDateClick}
             eventClick={handleEventClick}
             eventsSet={(events) => setCurrentEvents(events)}
-            ref={listDemandes}
+            events={listDemandes}
           />
           {/* lehne */}
           <Modal

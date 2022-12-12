@@ -16,6 +16,7 @@ import Team from "./scenes/admin/team";
 import Conge from "./scenes/admin/conge";
 import SignInPage from "./scenes/auth/LoginPage";
 import { useSelector } from "react-redux";
+import Protected from "./components/Protected";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -47,15 +48,47 @@ function App() {
               <main className="content">
                 <Topbar setIsSidebar={setIsSidebar} />
                 <Routes>
-                  <Route path="/" element={<Dashboard />} />
-                  <Route path="/team" element={<Team />} />
-                  <Route path="/form" element={<Form />} />
-                  <Route path="/bar" element={<Bar />} />
-                  <Route path="/pie" element={<Pie />} />
-                  <Route path="/line" element={<Line />} />
-                  <Route path="/faq" element={<FAQ />} />
-                  <Route path="/conge" element={<Conge />} />
-                  <Route path="/calendar" element={<Calendar />} />
+                  <Route
+                    path="/"
+                    element={
+                      <Protected nextPage={true} role={"admin"}>
+                        <Dashboard />
+                      </Protected>
+                    }
+                  />
+                  <Route
+                    path="/team"
+                    element={
+                      <Protected nextPage={true} role={"admin"}>
+                        <Team />
+                      </Protected>
+                    }
+                  />
+                  <Route
+                    path="/form"
+                    element={
+                      <Protected nextPage={true}>
+                        <Form />
+                      </Protected>
+                    }
+                  />
+
+                  <Route
+                    path="/conge"
+                    element={
+                      <Protected nextPage={true} role={"admin"}>
+                        <Conge />
+                      </Protected>
+                    }
+                  />
+                  <Route
+                    path="/calendar"
+                    element={
+                      <Protected nextPage={true} role={"user"}>
+                        <Calendar />
+                      </Protected>
+                    }
+                  />
                   <Route path="/geography" element={<Geography />} />
                 </Routes>
               </main>

@@ -80,14 +80,6 @@ export default function FullFeaturedCrudGrid() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const [formData, setFormData] = useState({
-    email: "medhssinihssini1@gmail.com",
-    password: "123456",
-    name: "med123",
-    gender: "Male",
-    isAdmin: false,
-  });
-
   const dispatch = useDispatch();
 
   const userAll = useSelector((state) => state.userAll);
@@ -157,16 +149,17 @@ export default function FullFeaturedCrudGrid() {
           newRow.email,
           "conge2024",
           newRow.gender,
-          newRow.isAdmin == "False" ? false : true,
+          newRow.isAdmin,
           newRow.workingWeek
         )
       );
     } else {
+      console.log(newRow.isAdmin);
       dispatch(
         updateUserProfile(
           {
             name: newRow.name,
-            isAdmin: newRow.isAdmin == "False" ? false : true,
+            isAdmin: newRow.isAdmin,
             email: newRow.email,
             workingWeek: newRow.workingWeek,
             gender: newRow.gender,
@@ -196,6 +189,8 @@ export default function FullFeaturedCrudGrid() {
       cellClassName: "name-column--cell",
       headerName: "Gender",
       editable: true,
+      type: "singleSelect",
+      valueOptions: ["Male", "Female"],
       flex: 1,
     },
     {
