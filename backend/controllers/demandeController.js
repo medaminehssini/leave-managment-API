@@ -49,6 +49,46 @@ const addUserDemande = asyncHandler(async (req, res) => {
   }
 });
 
+//@desc   Register a new user
+//@routes POST api/users
+//@access Public
+const getUserRest = asyncHandler(async (req, res) => {
+  const rtt = await getRestDemande(req.user._id, "RTT");
+  const Paid = await getRestDemande(req.user._id, "Paid");
+  const Maternity = await getRestDemande(req.user._id, "Maternity");
+  const Paternity = await getRestDemande(req.user._id, "Paternity");
+
+  res.status(201);
+  res.json({
+    RTT: 15 - rtt,
+    Paid: 30 - Paid,
+    Maternity: 60 - Maternity,
+    Paternity: 3 - Paternity,
+  });
+});
+
+const getRestDemande = async (userId, type) => {
+  const dateDebut = new Date().getFullYear() + "-01-" + "01";
+  const dateFin = new Date().getFullYear() + "-12-" + "31";
+
+  const demandes = await Demande.aggregate([
+    {
+      $match: {
+        user: userId,
+        type,
+        status: "accepted",
+        createdAt: { $gte: new Date(dateDebut), $lte: new Date(dateFin) },
+      },
+    },
+    {
+      $group: { _id: null, allDay: { $sum: "$nbr_jour" } },
+    },
+  ]);
+
+  let allDay = demandes[0] != null ? demandes[0].allDay : 0;
+  return allDay;
+};
+
 const verifDemande = async (userId, type, nbr_jour, workingWeek) => {
   const dateDebut = new Date().getFullYear() + "-01-" + "01";
   const dateFin = new Date().getFullYear() + "-12-" + "31";
@@ -161,4 +201,5 @@ export {
   accepteDemande,
   getDemandes,
   updateUserDemande,
+  getUserRest,
 };

@@ -118,18 +118,16 @@ const Sidebar = () => {
               </Box>
             </Box>
           )}
-
+          <Item
+            title="Dashboard"
+            to="/"
+            icon={<HomeOutlinedIcon />}
+            selected={selected}
+            setSelected={setSelected}
+          />
           <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             {userInfo && userInfo.isAdmin === true && (
               <>
-                <Item
-                  title="Dashboard"
-                  to="/"
-                  icon={<HomeOutlinedIcon />}
-                  selected={selected}
-                  setSelected={setSelected}
-                />
-
                 <Typography
                   variant="h6"
                   color={colors.grey[300]}

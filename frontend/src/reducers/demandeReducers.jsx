@@ -15,6 +15,9 @@ import {
   USER_DEMANDE_FAIL,
   USER_DEMANDE_REQUEST,
   USER_DEMANDE_SUCCESS,
+  USER_GET_STATS_FAIL,
+  USER_GET_STATS_REQUEST,
+  USER_GET_STATS_SUCCESS,
   USER_UPDATE_DEMANDE_FAIL,
   USER_UPDATE_DEMANDE_REQUEST,
   USER_UPDATE_DEMANDE_RESET,
@@ -97,6 +100,19 @@ export const refuseDemandeReducer = (state = {}, action) => {
     case ADMIN_REFUSE_DEMANDE_SUCCESS:
       return { loading: false, demande: action.payload };
     case ADMIN_REFUSE_DEMANDE_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const userGetDemandeStatsReducer = (state = {}, action) => {
+  switch (action.type) {
+    case USER_GET_STATS_REQUEST:
+      return { loading: true };
+    case USER_GET_STATS_SUCCESS:
+      return { loading: false, stats: action.payload };
+    case USER_GET_STATS_FAIL:
       return { loading: false, error: action.payload };
     default:
       return state;

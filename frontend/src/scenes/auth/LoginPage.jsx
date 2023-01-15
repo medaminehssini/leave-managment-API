@@ -72,7 +72,15 @@ export default function SignInPage() {
 
   return (
     <div className="text-center m-5-auto" style={HeaderStyle}>
-      <h2>Sign in to us</h2>
+      <h2
+        style={{
+          paddingTop: "180px",
+          color: "white",
+          fontSize: "50px",
+        }}
+      >
+        Sign in to us
+      </h2>
       <form>
         <p>
           <label>Username or email address</label>
@@ -85,11 +93,6 @@ export default function SignInPage() {
             onChange={(e) => handleUserInput(e)}
             className={formErrors["email"].length > 0 ? "inputError" : ""}
           />
-          {formErrors["email"].length > 0 && (
-            <p className="alert alert-danger descError">
-              {formErrors["email"]}
-            </p>
-          )}
         </p>
         <p>
           <label>Password</label>
@@ -102,11 +105,6 @@ export default function SignInPage() {
             className={formErrors["password"].length > 0 ? "inputError" : ""}
             onChange={(e) => handleUserInput(e)}
           />
-          {formErrors["password"].length > 0 && (
-            <p className="alert alert-danger descError">
-              {formErrors["password"]}
-            </p>
-          )}
         </p>
         <p>
           <button
@@ -120,14 +118,6 @@ export default function SignInPage() {
           </button>
         </p>
       </form>
-      <footer>
-        <p>
-          First time? <Link to="/register">Create an account</Link>.
-        </p>
-        <p>
-          <Link to="/">Back to Homepage</Link>.
-        </p>
-      </footer>
     </div>
   );
 }

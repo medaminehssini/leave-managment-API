@@ -17,6 +17,7 @@ import Conge from "./scenes/admin/conge";
 import SignInPage from "./scenes/auth/LoginPage";
 import { useSelector } from "react-redux";
 import Protected from "./components/Protected";
+import UserDashboard from "./scenes/userdashboard";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -51,8 +52,12 @@ function App() {
                   <Route
                     path="/"
                     element={
-                      <Protected nextPage={true} role={"admin"}>
-                        <Dashboard />
+                      <Protected nextPage={true}>
+                        {userInfo.isAdmin === true ? (
+                          <Dashboard />
+                        ) : (
+                          <UserDashboard />
+                        )}
                       </Protected>
                     }
                   />

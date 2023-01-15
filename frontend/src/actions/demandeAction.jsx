@@ -15,6 +15,9 @@ import {
   USER_DEMANDE_FAIL,
   USER_DEMANDE_REQUEST,
   USER_DEMANDE_SUCCESS,
+  USER_GET_STATS_FAIL,
+  USER_GET_STATS_REQUEST,
+  USER_GET_STATS_SUCCESS,
   USER_UPDATE_DEMANDE_FAIL,
   USER_UPDATE_DEMANDE_REQUEST,
   USER_UPDATE_DEMANDE_SUCCESS,
@@ -212,6 +215,38 @@ export const refuseDemande = (id) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: ADMIN_REFUSE_DEMANDE_FAIL,
+      payload:
+        error.response && error.response.data
+          ? error.response.data
+          : error.message,
+    });
+  }
+};
+
+export const getDemandeStats = () => async (dispatch, getState) => {
+  try {
+    dispatch({ type: USER_GET_STATS_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(USER_DEMANDE_API + "/stats", config);
+
+    dispatch({
+      type: USER_GET_STATS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: USER_GET_STATS_FAIL,
       payload:
         error.response && error.response.data
           ? error.response.data

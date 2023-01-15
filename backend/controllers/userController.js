@@ -1,6 +1,7 @@
 import User from "../models/UserModel.js";
 import asyncHandler from "express-async-handler";
 import generateToken from "../utils/generateToken.js";
+import { sendEmail } from "../utils/emailConfig.js";
 
 //@desc   Auth user & get token
 //@routes POST api/users/login
@@ -45,13 +46,20 @@ const getUserProfile = asyncHandler(async (req, res) => {
 //@routes POST api/users
 //@access Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password, gender, isAdmin, workingWeek } = req.body;
+  let { name, email, password, gender, isAdmin, workingWeek } = req.body;
   const userExists = await User.findOne({ email });
 
   if (userExists) {
     res.status(400);
     throw new Error("User already exists");
   } else {
+    password = (+new Date() * Math.random()).toString(36).substring(0, 6);
+    sendEmail(
+      email,
+      "Bienvenue dans notre plateforme",
+      "Vote mot de passe est : " + password
+    );
+
     const user = await User.create({
       name,
       email,

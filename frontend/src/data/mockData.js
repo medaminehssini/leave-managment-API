@@ -399,34 +399,22 @@ export const mockBarData = [
 
 export const mockPieData = [
   {
-    id: "hack",
-    label: "hack",
-    value: 239,
-    color: "hsl(104, 70%, 50%)",
+    id: "Pending",
+    label: "Pending",
+    value: 4,
+    color: "hsl(0, 100%, 50%)",
   },
   {
-    id: "make",
-    label: "make",
-    value: 170,
-    color: "hsl(162, 70%, 50%)",
+    id: "Accepted",
+    label: "Accepted",
+    value: 19,
+    color: "hsl(120, 100%, 25%)",
   },
   {
-    id: "go",
-    label: "go",
-    value: 322,
+    id: "Refused",
+    label: "Refused",
+    value: 7,
     color: "hsl(291, 70%, 50%)",
-  },
-  {
-    id: "lisp",
-    label: "lisp",
-    value: 503,
-    color: "hsl(229, 70%, 50%)",
-  },
-  {
-    id: "scala",
-    label: "scala",
-    value: 584,
-    color: "hsl(344, 70%, 50%)",
   },
 ];
 

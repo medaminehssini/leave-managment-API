@@ -212,6 +212,8 @@ export default function FullFeaturedCrudGrid() {
       headerName: "isAdmin",
       flex: 1,
       editable: true,
+      type: "singleSelect",
+      valueOptions: ["true", "false"],
     },
     {
       field: "actions",

@@ -23,6 +23,7 @@ import {
   refuseDemandeReducer,
   updateUserDemandeReducer,
   userAddDemandeReducer,
+  userGetDemandeStatsReducer,
 } from "./reducers/demandeReducers";
 
 const reducer = combineReducers({
@@ -33,6 +34,7 @@ const reducer = combineReducers({
   userChangePassword: userChangePasswordReducer,
   userResetPassword: userResetPasswordReducer,
   userAll: getAllUsersReducer,
+  userStats: userGetDemandeStatsReducer,
 
   userDemande: getUserDemandeReducer,
   userAddDemande: userAddDemandeReducer,

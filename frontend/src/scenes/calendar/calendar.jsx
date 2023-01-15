@@ -21,6 +21,7 @@ import { tokens } from "../../theme";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserDemande, userAddDemande } from "../../actions/demandeAction";
+import { toastAlert } from "../../utils/alert";
 
 const style = {
   position: "absolute",
@@ -49,10 +50,17 @@ const Calendar = () => {
   const [listDemandes, setListDemande] = useState([]);
 
   const userAddD = useSelector((state) => state.userAddDemande);
-  const { success: successADD, loading: loadingAdd } = userAddD;
+  const {
+    success: successADD,
+    error: errorAdd,
+    loading: loadingAdd,
+  } = userAddD;
 
   const userDemande = useSelector((state) => state.userDemande);
   const { success, loading, demandes } = userDemande;
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
   useEffect(() => {
     dispatch(getUserDemande());
@@ -94,16 +102,19 @@ const Calendar = () => {
       label: "Paid",
       color: "purple",
     },
-    {
-      value: "60 jour fixe par an",
-      label: "Maternity",
-      color: "#e44662",
-    },
-    {
-      value: "3 jours fixes",
-      label: "Paternity",
-      color: "blue",
-    },
+
+    userInfo.gender == "Female"
+      ? {
+          value: "60 jour fixe par an",
+          label: "Maternity",
+          color: "#e44662",
+        }
+      : {
+          value: "3 jours fixes",
+          label: "Paternity",
+          color: "blue",
+        },
+
     {
       value: "15 jours fixes",
       label: "RTT",
@@ -143,9 +154,14 @@ const Calendar = () => {
   };
 
   useEffect(() => {
+    if (errorAdd) {
+      toastAlert("your request exceeds the limit ", "error");
+    }
+  }, [errorAdd]);
+  useEffect(() => {
     if (successADD) {
       setOpen(false);
-
+      toastAlert("Your leave request have been saved");
       // const t = conges.filter((e) => (e.label === conge ? e.color : ""));
       // const calendarApi = selected.view.calendar;
       // calendarApi.unselect();

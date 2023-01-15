@@ -1,14 +1,42 @@
 import { ResponsivePie } from "@nivo/pie";
 import { tokens } from "../theme";
 import { useTheme } from "@mui/material";
-import { mockPieData as data } from "../data/mockData";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 
 const PieChart = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const demandeAll = useSelector((state) => state.adminListDemande);
+  const { loadingDemande, errorDemande, demandes } = demandeAll;
+
   return (
     <ResponsivePie
-      data={data}
+      data={[
+        {
+          id: "Pending",
+          label: "Pending",
+          value: demandes.filter(
+            (demandes) => demandes.status === "en progress"
+          ).length,
+          color: "hsl(0, 100%, 50%)",
+        },
+        {
+          id: "Accepted",
+          label: "Accepted",
+          value: demandes.filter((demandes) => demandes.status === "accepted")
+            .length,
+          color: "hsl(120, 100%, 25%)",
+        },
+        {
+          id: "Refused",
+          label: "Refused",
+          value: demandes.filter((demandes) => demandes.status === "refused")
+            .length,
+          color: "hsl(291, 70%, 50%)",
+        },
+      ]}
       theme={{
         axis: {
           domain: {
